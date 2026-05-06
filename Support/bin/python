@@ -10,9 +10,7 @@ function fail {
   exit 200
 }
 
-if [ -e /usr/bin/python ]; then
-  exec /usr/bin/python "$@"
-else
-  /usr/bin/python3 -c "import PyObjCTools" 2>/dev/null || fail
-  exec /usr/bin/python3 "$@"
-fi
+# macOS 26 / Apple Silicon: only /usr/bin/python3 (3.9.6) is shipped.
+# Verify PyObjC is available, then exec python3.
+/usr/bin/python3 -c "import PyObjCTools" 2>/dev/null || fail
+exec /usr/bin/python3 "$@"
