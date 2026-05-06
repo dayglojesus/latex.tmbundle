@@ -16,13 +16,11 @@ require 'pathname'
 require 'rubygems'
 require 'yaml'
 
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new(2.2)
-  require ENV['TM_BUNDLE_SUPPORT'] + '/lib/Ruby/lib/unf'
-else
-  # Ruby 2.2 already supports Unicode normalization
-  class String
-    alias to_nfc unicode_normalize
-  end
+# Ruby 2.2+ supports Unicode normalization natively via String#unicode_normalize.
+# The dayglojesus fork targets Ruby 2.6.10 (macOS 26 system), so we always use
+# the stdlib path and no longer ship the bundled unf / unf_ext gem.
+class String
+  alias to_nfc unicode_normalize
 end
 
 # -- Classes -------------------------------------------------------------------
